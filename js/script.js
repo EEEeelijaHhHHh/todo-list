@@ -2,6 +2,9 @@ const btnAddItem = document.querySelector('.todo-button');
 
 // Click event on the button, then take the value from input and do function
 btnAddItem.addEventListener('click', () => {
+  // Disable page reload on the click at button
+  event.preventDefault();
+
   const inputItem = document.querySelector('.todo-input');
   const inputText = inputItem.value;
   inputItem.value = '';

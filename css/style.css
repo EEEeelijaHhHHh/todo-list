@@ -74,8 +74,6 @@ body {
   margin: 0;
 }
 
-
-
 .todo-list::before {
   display: block;
   width: 100%;

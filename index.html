@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo List Application</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/icomoon.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="todo-wrap">
+    <header class="header">
+      <div class="container">
+        <form class="todo-form">
+          <input type="text" class="todo-input" placeholder="Enter an activity...">
+          <button class="todo-button"><span class="icon-add"></span></button>
+        </form>
+      </div>
+    </header>
+    <div class="container">
+      <ul class="todo-list todo-list-active" id="todo-list-active"></ul>
+      <ul class="todo-list todo-list-completed" id="todo-list-completed"></ul>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>

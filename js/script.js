@@ -1,13 +1,7 @@
 const btnAddItem = document.querySelector('.todo-button');
 
-btnAddItem.addEventListener('click', addTodoItem);
-/* btnAddItem.addEventListener('keyup', (e) => {
-  console.log(e);
-}); */
-
-function addTodoItem() {
-  event.preventDefault();
-
+// Click event on the button, then take the value from input and do function
+btnAddItem.addEventListener('click', () => {
   const inputItem = document.querySelector('.todo-input');
   const inputText = inputItem.value;
   inputItem.value = '';
@@ -15,8 +9,9 @@ function addTodoItem() {
   if (inputText) {
     createTodoItem(inputText);
   }
-}
+});
 
+// Creating the new DOM item in the todo list
 function createTodoItem(inputText) {
   const list = document.querySelector('.todo-list-active');
 
@@ -33,6 +28,7 @@ function createTodoItem(inputText) {
   removeIcon.classList.add('icon', 'icon-bin');
   remove.append(removeIcon);
 
+  // Click event for the "remove button"
   remove.addEventListener('click', removeTodoItem);
 
   const done = document.createElement('button');
@@ -41,6 +37,7 @@ function createTodoItem(inputText) {
   doneIcon.classList.add('icon', 'icon-done');
   done.append(doneIcon);
 
+  // Click event for the "done button"
   done.addEventListener('click', completeTodoItem);
 
   item.append(text, remove, done);
@@ -58,10 +55,12 @@ function completeTodoItem() {
   const id = list.id;
   const button = this.lastChild.parentNode;  
   
+  // Does item is completed or active, target to another todo list
   const target = (id === "todo-list-active") 
     ? document.getElementById('todo-list-completed') 
     : document.getElementById('todo-list-active');
   
+  // Insert item to the another todo list
   target.insertBefore(item, target.childNodes[0]);
   button.classList.toggle('button-completed');
 }

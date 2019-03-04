@@ -90,7 +90,7 @@ body {
 }
 
 .todo-list-completed:empty::before {
-  content: "You don't have complete any task yet.";
+  content: "You don't complete any task yet.";
 }
 
 .todo-list-active {

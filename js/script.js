@@ -1,5 +1,12 @@
 const btnAddItem = document.querySelector('.todo-button');
 
+// Checks for localStorage todo list data and render this
+let data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')) : {
+  active: [],
+  completed: []
+};
+dataRender();
+
 // Click event on the button, then take the value from input and do function
 btnAddItem.addEventListener('click', () => {
   // Disable page reload on the click at button
@@ -9,14 +16,17 @@ btnAddItem.addEventListener('click', () => {
   const inputText = inputItem.value;
   inputItem.value = '';
 
+  // Add new data to array
   if (inputText) {
     createTodoItem(inputText);
+    data.active.push(inputText);
+    dataUpdate();
   }
 });
 
 // Creating the new DOM item in the todo list
-function createTodoItem(inputText) {
-  const list = document.querySelector('.todo-list-active');
+function createTodoItem(inputText, completed) {
+  const list = (completed) ? document.querySelector('.todo-list-completed') : document.querySelector('.todo-list-active');
 
   const item = document.createElement('li');
   item.classList.add('todo-item');
@@ -39,31 +49,77 @@ function createTodoItem(inputText) {
   const doneIcon = document.createElement('span');
   doneIcon.classList.add('icon', 'icon-done');
   done.append(doneIcon);
+  if (completed) {
+    done.classList.toggle('button-completed');
+  }
 
   // Click event for the "done button"
   done.addEventListener('click', completeTodoItem);
 
   item.append(text, remove, done);
-  list.insertBefore(item, list.childNodes[0]);  
+  list.insertBefore(item, list.childNodes[0]); 
+
 }
 
 function removeTodoItem() {
   const item = this.parentNode;
+  const list = item.parentNode;
+  const id = list.id;
+  const text = item.firstChild.innerText;
   item.remove();
+
+  // Remove data from array
+  if (id === 'todo-list-active') {
+    data.active.splice(data.active.indexOf(text), 1);
+  } else {
+    data.completed.splice(data.completed.indexOf(text), 1);
+  } 
+  dataUpdate();
 }
 
 function completeTodoItem() {
   const item = this.parentNode;
   const list = item.parentNode;
   const id = list.id;
-  const button = this.lastChild.parentNode;  
+  const button = this.lastChild.parentNode;
+  const text = item.firstChild.innerText;
   
   // Does item is completed or active, target to another todo list
-  const target = (id === "todo-list-active") 
+  const target = (id === 'todo-list-active') 
     ? document.getElementById('todo-list-completed') 
     : document.getElementById('todo-list-active');
   
   // Insert item to the another todo list
   target.insertBefore(item, target.childNodes[0]);
   button.classList.toggle('button-completed');
+
+  // Change data array
+  if (id === 'todo-list-active') {
+    data.active.splice(data.active.indexOf(text), 1);
+    data.completed.push(text);
+  } else {
+    data.completed.splice(data.completed.indexOf(text), 1);
+    data.active.push(text);
+  }
+  dataUpdate();
+}
+
+// Add data to Local Storage
+function dataUpdate() {
+  localStorage.setItem('todoList', JSON.stringify(data));  
+}
+
+function dataRender() {
+  // If data empty => break render
+  if (!data.active.length && !data.completed.length) return;
+
+  // Add saved data to the correct todo list 
+  for (let i = 0; i < data.active.length; i++) {
+    let inputText = data.active[i];
+    createTodoItem(inputText);
+  }
+  for (let i = 0; i < data.completed.length; i++) {
+    let inputText = data.completed[i];
+    createTodoItem(inputText, true);
+  }
 }

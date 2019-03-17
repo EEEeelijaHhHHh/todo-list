@@ -122,6 +122,19 @@ body {
   border-radius: 7px;
   margin-bottom: 10px;
   padding: 0 15px;
+  cursor: pointer;
+}
+
+.todo-item_active {
+  cursor: text;
+  border: 1px solid #45bf93;
+}
+
+.todo-text_rename {
+  font-weight: 700;
+  border: none;
+  outline: none;
+  width: 100%;
 }
 
 .todo-item:last-child {

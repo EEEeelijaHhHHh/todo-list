@@ -57,8 +57,42 @@ function createTodoItem(inputText, completed) {
   done.addEventListener('click', completeTodoItem);
 
   item.append(text, remove, done);
-  list.insertBefore(item, list.childNodes[0]); 
+  list.insertBefore(item, list.childNodes[0]);
 
+  // Double click event on all todo items
+  const items = document.querySelectorAll('.todo-item');
+  items.forEach(item => item.addEventListener('dblclick', renameTodoList));
+}
+
+function renameTodoList() {
+  const list = this.parentNode;
+  const id = list.id;
+  const itemText = this.querySelector('.todo-text');
+  const input = document.createElement('input');
+  
+  // Remove span, add input
+  input.setAttribute('placeholder', itemText.textContent);
+  input.classList.add('todo-text_rename');
+  this.classList.add('todo-item_active');
+  itemText.remove();
+  this.insertBefore(input, this.childNodes[0]);
+
+  input.addEventListener('change', () => {
+    // Remove input, add span with input text
+    prevText = itemText.textContent;
+    itemText.textContent = input.value;
+    this.insertBefore(itemText, this.childNodes[0]);
+    input.remove();
+    this.classList.remove('todo-item_active');
+
+    // Change data on the change event
+    if (id === 'todo-list-active') {
+      data.active.splice(data.active.indexOf(prevText), 1, itemText.textContent);
+    } else {
+      data.completed.splice(data.completed.indexOf(prevText), 1, itemText.textContent);
+    }
+    dataUpdate();
+  });
 }
 
 function removeTodoItem() {
@@ -123,3 +157,4 @@ function dataRender() {
     createTodoItem(inputText, true);
   }
 }
+
